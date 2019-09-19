@@ -7,6 +7,7 @@ import random
 import time
 import re
 
+plt.rcParams['font.sans-serif']=['SimHei']
 db=pymysql.connect(host='localhost',user='root',password='password',database='item2',charset='utf8')
 sql='''
 SELECT *
@@ -32,3 +33,52 @@ def tur_model(data):
     for x in s:
         lst.append(''.join(re.findall(u'[a-z0-9]',x)))
     return lst
+
+def explore(data):
+    fig=plt.figure(figsize=(25,6))
+    values=[data.click.sum(),data.click.count()-data.click.sum()]
+    ax1=fig.add_subplot(221)
+    plt.pie(values,labels=['点击','未点击'],shadow=True,autopct='%1.1f%%')
+    plt.title('点击率')
+
+    ax2=fig.add_subplot(222)
+    grouped1=data['click'].groupby(data['time'])
+    time_click_rate=grouped1.sum()/grouped1.count()
+    plt.bar(time_click_rate.index,time_click_rate.values)
+    plt.title('各时间段点击率')
+
+    '''
+    ax3=fig.add_subplot(223)
+    a=data[['make','click']]
+    a=a.dropna(axis=0)
+    grouped2=a.click.groupby(a['make'])
+    make_click_rate=grouped2.sum()/grouped2.count()
+    plt.barh(make_click_rate.index,make_click_rate.values)
+    plt.title('手机品牌作用性')
+'''
+    ax3=fig.add_axes([0.05,0.05,0.55,0.4])
+    grouped3=data['click'].groupby(data['advert_industry_inner'])
+    inner_click_rate=grouped3.sum()/grouped3.count()
+    ax3.bar(inner_click_rate.index,inner_click_rate.values)
+    plt.title('广告主行业作用性')
+#由于手机品牌太多，还是直接看数吧，画图画不出来
+
+    ax4=fig.add_subplot(224)
+    grouped4=data['click'].groupby(data['province'])
+    area_click_rate=grouped4.sum()/grouped4.count()
+    plt.bar(area_click_rate.index,area_click_rate.values)
+    plt.title('地域作用性')
+
+    
+
+    plt.show()
+    
+    plt.pie
+
+def explore1(data,feature):
+    G=data.click.groupby(data[feature])
+    rate=G.sum()/G.count()
+    graph=plt.bar(rate.index,rate.values)
+    plt.title(feature)
+    return graph,rate
+
