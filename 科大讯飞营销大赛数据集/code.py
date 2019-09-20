@@ -82,3 +82,20 @@ def explore1(data,feature):
     plt.title(feature)
     return graph,rate
 
+def Get_P(data,feature):
+    '''
+data ----输入的数据
+feature ----表示想要查询的字段特征
+
+输出
+fre ----feature下各情况的频率 即P(w)
+rate ----feature下各情况的点击概率 即P(W|c)
+    '''
+    a=data[feature].unique()
+    fre={}
+    for _ in a:
+        rate1=list(data[feature]).count(_)/data[feature].count()
+        fre[_]=rate1
+    G=data.click.groupby(data[feature])
+    rate2=G.sum()/G.count()
+    return fre,rate2
