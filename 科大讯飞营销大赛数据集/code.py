@@ -82,6 +82,18 @@ def explore1(data,feature):
     plt.title(feature)
     return graph,rate
 
+
+def create_set(data,m):
+    '''
+data ----传入数据
+m    _____想要抽取多少行数据作为测试验证集
+输出测试集和训练集，训练集不包括测试集数据
+'''
+    test_index=random.sample(range(0,data.time.count()),m)#注意这地里是读取data中time字段的行数，不具有通用性
+    test_set=data.iloc[test_index]
+    train_set=data.loc[~data.index.isin(test_index)]
+    return test_set,train_set
+
 def Get_P(data,feature):
     '''
 data ----输入的数据
