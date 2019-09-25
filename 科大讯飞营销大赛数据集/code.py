@@ -73,8 +73,6 @@ def explore(data):
 
     plt.show()
     
-    plt.pie
-
 def explore1(data,feature):
     G=data.click.groupby(data[feature])
     rate=G.sum()/G.count()
@@ -108,6 +106,34 @@ rate ----feature下各情况的点击概率 即P(W|c)
     for _ in a:
         rate1=list(data[feature]).count(_)/data[feature].count()
         fre[_]=rate1
+    fre=Series(fre)
     G=data.click.groupby(data[feature])
-    rate2=G.sum()/G.count()
+    rate2=(G.sum()+1)/(G.count()+2)#此处使用拉普拉斯修正法，另2不具有通用性，2是因为click只有2种分类情况    
     return fre,rate2
+def Get_Loss(data,features):
+    from functools import reduce
+    p_c=data.click.sum()/data.click.count()
+    p=[]
+    for i in range(len(features)):
+        fre,rate=Get_P(data,features[i])
+        _=rate*p_c/fre
+        p.append(_)
+    p=reduce(lambda x,y:x*y,p)
+    return p
+
+columns=list(Series(list(data))[[1,3,4,15,23,24,25]])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
