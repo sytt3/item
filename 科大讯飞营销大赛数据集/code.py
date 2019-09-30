@@ -34,6 +34,14 @@ def tur_model(data):
         lst.append(''.join(re.findall(u'[a-z0-9]',x)))
     return lst
 
+def get_figure(feature):
+    global data
+    lst=list(data[feature].unique())
+    figure=[]
+    for _ in data[feature]:
+        figure.append(lst.index(_))
+    return figure
+
 def explore(data):
     fig=plt.figure(figsize=(25,6))
     values=[data.click.sum(),data.click.count()-data.click.sum()]
@@ -92,8 +100,10 @@ m    _____想要抽取多少行数据作为测试验证集
     train_set=data.loc[~data.index.isin(test_index)]
     return test_set,train_set
 
+'''
 def Get_P(data,feature):
     '''
+'''
 data ----输入的数据
 feature ----表示想要查询的字段特征
 
@@ -101,6 +111,7 @@ feature ----表示想要查询的字段特征
 fre ----feature下各情况的频率 即P(w)
 rate ----feature下各情况的点击概率 即P(W|c)
     '''
+'''
     a=data[feature].unique()
     fre={}
     for _ in a:
@@ -121,7 +132,8 @@ def Get_Loss(data,features):
     p=reduce(lambda x,y:x*y,p)
     return p
 
-columns=list(Series(list(data))[[1,3,4,15,23,24,25]])
+#columns=list(Series(list(data))[[1,3,4,15,23,24,25]])
+'''
 
 
 
