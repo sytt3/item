@@ -7,6 +7,7 @@ from xlutils.copy import copy
 import pandas as pd
 import datetime
 import matplotlib.pyplot as plt
+plt.rcParams['font.sans-serif']='simhei'
 def get_database():
     import requests
     from bs4 import BeautifulSoup
@@ -140,12 +141,36 @@ def wordcloud(rank):
     plt.imshow(wc)
     plt.axis('off')
     plt.show()
-    
+
+
+def plot(data):
+    #plt.style.use('dark_background')
+    #f,ax=plt.subplots(figsize=(8,6))
+    fig=plt.figure()
+    rect=[0.1,0.1,0.8,0.8]
+    axprops=dict(xticks=[],yticks=[])
+    ax0=fig.add_axes(rect,label='ax0',**axprops)
+    ax=fig.add_axes(rect,label='ax',frameon=False)
+    barh=plt.barh(data.index[::-1],data.values[::-1],color='dodgerblue')
+    colors=['orange','orangered','gold','tomato','coral','peru','sienna','moccasin']
+    for i in range(len(data)):
+        barh[i].set_color(random.choice(colors))
+    for y, x in enumerate(rank.values[::-1]):
+        plt.text(x+5, y-0.2, "%s" %x)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    imgP=plt.imread('money.jpg')
+    ax0.imshow(imgP)
+    plt.xlabel=('持股基金数')
+    plt.ylebel=('股票名字')
+    plt.show()
+
 if __name__=='__main__':
     data=pd.read_excel('Gupiao.xls')
-    rank=get_rank(data,10)
-
-
+    rank=get_rank(data,5)[0:11]
+    plot(rank)
 
 
 
